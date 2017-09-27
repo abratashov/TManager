@@ -28,6 +28,20 @@ gem 'puma', '~> 3.7'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  gem 'awesome_print'
+
+  # Testing
+  gem 'rspec'
+  gem 'rspec-rails', '~> 3.6'
+  gem 'json_spec'
+  gem 'database_cleaner'
+  gem 'factory_girl_rails'
+  gem 'ffaker'
+  gem 'shoulda-matchers'
+end
+
+group :test do
+  gem 'simplecov', require: false
 end
 
 group :development do

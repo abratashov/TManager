@@ -6,7 +6,7 @@ class User < ApplicationRecord
 
   validate :password_validation
 
-  before_validation :devise_email_skipping
+  before_validation :devise_email_skipping, on: :create
 
   validates :username,
             presence: true,
@@ -15,10 +15,12 @@ class User < ApplicationRecord
 
   include DeviseTokenAuth::Concerns::User
 
+  has_many :projects
+
   private
 
   def devise_email_skipping
-    self.email = "#{SecureRandom.hex}@m.cc"
+    self.email = "#{SecureRandom.hex}@m.cc" unless email
   end
 
   def password_validation

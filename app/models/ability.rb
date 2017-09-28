@@ -31,6 +31,7 @@ class Ability
 
     user ||= User.new # guest user (not logged in)
     can :manage, Project, user_id: user.id
+    can :manage, Task, project: { user_id: user.id }
     # can :manage, :all
   end
 end

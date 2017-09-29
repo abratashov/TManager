@@ -30,6 +30,9 @@ gem 'omniauth'
 gem 'devise_token_auth'
 gem 'cancancan', '~> 2.0'
 gem 'active_model_serializers'
+gem 'carrierwave', '~> 1.0'
+gem 'carrierwave-i18n'
+gem 'acts_as_list'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

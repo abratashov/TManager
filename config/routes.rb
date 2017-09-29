@@ -4,13 +4,17 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :projects do
-        resources :tasks
+        resources :tasks do
+          resources :comments, except: [:show, :update]
+        end
       end
     end
   end
 
   resources :projects, module: 'api/v1' do
-    resources :tasks
+    resources :tasks do
+      resources :comments, except: [:show, :update]
+    end
   end
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

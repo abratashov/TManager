@@ -9,7 +9,6 @@ class User < ApplicationRecord
   before_validation :devise_email_skipping, on: :create
 
   validates :username,
-            presence: true,
             length: { minimum: 3, maximum: 50 },
             format: { with: /\A[a-zA-Z0-9]*\z/ }
 

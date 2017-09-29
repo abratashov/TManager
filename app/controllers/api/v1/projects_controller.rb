@@ -1,6 +1,6 @@
 module Api::V1
   class ProjectsController < ApiController
-    load_and_authorize_resource
+    load_and_authorize_resource through: :current_user
 
     def index
       @projects = current_user.projects

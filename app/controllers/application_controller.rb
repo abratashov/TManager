@@ -9,7 +9,9 @@ class ApplicationController < ActionController::API
     render json: { message: 'Not found', code: 'not_found' }, status: :not_found
   end
 
+  # :nocov:
   def render_error_response(exception)
     render json: { message: exception.message, code: exception.code }, status: exception.http_status
   end
+  # :nocov:
 end

@@ -2,13 +2,13 @@ require 'rails_helper'
 
 RSpec.describe Comment, type: :model do
   context 'validation & association' do
-    before { FactoryGirl.build(:comment) }
+    before { build(:comment) }
 
     it { is_expected.to belong_to(:task).counter_cache(true) }
     it { is_expected.to validate_length_of(:body).is_at_least(10).is_at_most(256) }
 
     context 'validation an attachment' do
-      let(:comment) { FactoryGirl.create(:comment) }
+      let(:comment) { create(:comment) }
 
       let(:attachment_small) { fixuter_file_uploader('files/small.png') }
       let(:attachment_big) { fixuter_file_uploader('files/big.jpg') }

@@ -10,9 +10,11 @@ class AttachmentUploader < CarrierWave::Uploader::Base
 
   # Override the directory where uploaded files will be stored.
   # This is a sensible default for uploaders that are meant to be mounted:
+  # :nocov:
   def store_dir
     "uploads/#{model.class.to_s.underscore}/#{model.created_at.year}/#{model.created_at.month}/#{model.created_at.day}/#{model.id}"
   end
+  # :nocov:
 
   # Provide a default URL as a default if there hasn't been a file uploaded:
   # def default_url(*args)

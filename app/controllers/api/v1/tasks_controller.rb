@@ -24,7 +24,7 @@ module Api::V1
     end
 
     def update
-      @task.update_position(task_params[:position]) if task_params[:position]
+      @task.update_position(task_params[:position].to_i) if task_params[:position]
 
       if @task.update(task_params)
         render json: @task

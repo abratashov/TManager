@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :comment do
-    body "MyText"
-    attachment "MyString"
-    task nil
+    body { FFaker::Lorem.sentence(3) }
+    attachment nil
+    task
   end
 end

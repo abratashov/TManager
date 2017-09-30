@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :project do
-    name "MyString"
-    user nil
+    name { "#{FFaker::Lorem.word}-#{SecureRandom.hex(4)}" }
+    user
   end
 end

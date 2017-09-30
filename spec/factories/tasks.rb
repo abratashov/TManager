@@ -1,10 +1,10 @@
 FactoryGirl.define do
   factory :task do
-    name "MyString"
+    name { "#{FFaker::Lorem.word}-#{SecureRandom.hex(4)}" }
     deadline "2017-09-28 21:32:06"
     position 1
     done false
-    project nil
-    comments_count 1
+    project
+    comments_count 0
   end
 end

@@ -33,6 +33,7 @@ gem 'active_model_serializers'
 gem 'carrierwave', '~> 1.0'
 gem 'carrierwave-i18n'
 gem 'acts_as_list'
+gem 'swagger-docs'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -47,6 +48,8 @@ group :development, :test do
   gem 'factory_girl_rails'
   gem 'ffaker'
   gem 'shoulda-matchers'
+
+  gem 'bullet'
 end
 
 group :test do

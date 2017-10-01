@@ -16,5 +16,7 @@ Rails.application.routes.draw do
       resources :comments, except: [:show, :update]
     end
   end
+
+  get '/apidocs' => redirect('/swagger/dist/index.html?url=/apidocs/api-docs.yml')
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

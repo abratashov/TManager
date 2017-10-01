@@ -4,7 +4,7 @@ module Api::V1
     load_and_authorize_resource :task, through: :project
 
     def index
-      @tasks = @project.tasks
+      @tasks = @project.tasks.includes(:project)
 
       render json: @tasks
     end

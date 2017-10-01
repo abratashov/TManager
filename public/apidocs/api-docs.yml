@@ -1,0 +1,652 @@
+swagger: '2.0'
+info:
+  description: |
+    This is a TManager 1.0 server
+  version: 1.0.0
+  title: TManager 1.0
+# host: tmanager_v1.swagger.io
+# basePath: /v2
+tags:
+- name: project
+  description: Managing your Projects
+  externalDocs:
+    description: Find out more
+    url: http://swagger.io
+- name: task
+  description: Access to Project tasks
+- name: comment
+  description: Access to Task comments
+  externalDocs:
+    description: Find out more about our store
+    url: http://swagger.io
+# schemes:
+# - http
+paths:
+  /projects:
+    get:
+      tags:
+      - project
+      summary: Show all projects
+      description: Returns a all users' project
+      produces:
+      - application/json
+      - application/xml
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Project'
+        404:
+          description: Projects not found
+      security:
+      - uid: []
+      - access-token: []
+      - client: []
+    post:
+      tags:
+      - project
+      summary: Add a new project to the current user
+      operationId: addProject
+      consumes:
+      - application/json
+      - application/xml
+      produces:
+      - application/json
+      - application/xml
+      parameters:
+      - in: body
+        name: project
+        description: Project object that needs to be added
+        required: true
+        schema:
+          $ref: '#/definitions/Project'
+      responses:
+        405:
+          description: Invalid input
+      security:
+      - uid: []
+      - access-token: []
+      - client: []
+  /projects/{projectId}:
+    put:
+      tags:
+      - project
+      summary: Update an existing project
+      operationId: updateProject
+      consumes:
+      - application/json
+      - application/xml
+      produces:
+      - application/json
+      - application/xml
+      parameters:
+      - name: projectId
+        in: path
+        description: Project id to delete
+        required: true
+        type: integer
+        format: int64
+      - in: body
+        name: project
+        description: Project object that needs to be added to current user
+        required: true
+        schema:
+          $ref: '#/definitions/Project'
+      responses:
+        400:
+          description: Invalid ID supplied
+        404:
+          description: Project not found
+        405:
+          description: Validation exception
+      security:
+      - uid: []
+      - access-token: []
+      - client: []
+    get:
+      tags:
+      - project
+      summary: Find project by ID
+      description: Returns a single project
+      operationId: getProjectById
+      produces:
+      - application/json
+      - application/xml
+      parameters:
+      - name: projectId
+        in: path
+        description: ID of project to return
+        required: true
+        type: integer
+        format: int64
+      responses:
+        200:
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Project'
+        400:
+          description: Invalid ID supplied
+        404:
+          description: Project not found
+      security:
+      - uid: []
+      - access-token: []
+      - client: []
+    delete:
+      tags:
+      - project
+      summary: Deletes a project
+      operationId: deleteProject
+      produces:
+      - application/json
+      - application/xml
+      parameters:
+      - name: projectId
+        in: path
+        description: Project id to delete
+        required: true
+        type: integer
+        format: int64
+      responses:
+        400:
+          description: Invalid ID supplied
+        404:
+          description: Project not found
+      security:
+      - uid: []
+      - access-token: []
+      - client: []
+
+  /projects/{projectId}/tasks:
+    get:
+      tags:
+      - task
+      summary: Show all projects' tasks
+      description: Returns a all projects' tasks
+      produces:
+      - application/json
+      - application/xml
+      parameters:
+      - name: projectId
+        in: path
+        description: ID of project
+        required: true
+        type: integer
+        format: int64
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Task'
+        404:
+          description: Task not found
+      security:
+      - uid: []
+      - access-token: []
+      - client: []
+    post:
+      tags:
+      - task
+      summary: Add a new task to the project
+      operationId: addTask
+      consumes:
+      - application/json
+      - application/xml
+      produces:
+      - application/json
+      - application/xml
+      parameters:
+      - name: projectId
+        in: path
+        description: ID of project
+        required: true
+        type: integer
+        format: int64
+      - in: body
+        name: task
+        description: Task object that needs to be added
+        required: true
+        schema:
+          $ref: '#/definitions/Task'
+      responses:
+        405:
+          description: Invalid input
+      security:
+      - uid: []
+      - access-token: []
+      - client: []
+  /projects/{projectId}/tasks/{taskId}:
+    put:
+      tags:
+      - task
+      summary: Update an existing task
+      operationId: updateTask
+      consumes:
+      - application/json
+      - application/xml
+      produces:
+      - application/json
+      - application/xml
+      parameters:
+      - name: projectId
+        in: path
+        description: ID of project
+        required: true
+        type: integer
+        format: int64
+      - name: taskId
+        in: path
+        description: ID of task
+        required: true
+        type: integer
+        format: int64
+      - in: body
+        name: task
+        description: Task object that needs to be added to current project
+        required: true
+        schema:
+          $ref: '#/definitions/Task'
+      responses:
+        400:
+          description: Invalid ID supplied
+        404:
+          description: Task not found
+        405:
+          description: Validation exception
+      security:
+      - uid: []
+      - access-token: []
+      - client: []
+    get:
+      tags:
+      - task
+      summary: Find task by ID
+      description: Returns a single task
+      operationId: getTaskById
+      produces:
+      - application/json
+      - application/xml
+      parameters:
+      - name: projectId
+        in: path
+        description: ID of project
+        required: true
+        type: integer
+        format: int64
+      - name: taskId
+        in: path
+        description: ID of task
+        required: true
+        type: integer
+        format: int64
+      responses:
+        200:
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Task'
+        400:
+          description: Invalid ID supplied
+        404:
+          description: Task not found
+      security:
+      - uid: []
+      - access-token: []
+      - client: []
+    delete:
+      tags:
+      - task
+      summary: Deletes a task
+      operationId: deleteTask
+      produces:
+      - application/json
+      - application/xml
+      parameters:
+      - name: projectId
+        in: path
+        description: ID of project
+        required: true
+        type: integer
+        format: int64
+      - name: taskId
+        in: path
+        description: Task id to delete
+        required: true
+        type: integer
+        format: int64
+      responses:
+        400:
+          description: Invalid ID supplied
+        404:
+          description: Task not found
+      security:
+      - uid: []
+      - access-token: []
+      - client: []
+
+  /projects/{projectId}/tasks/{taskId}/comments:
+    get:
+      tags:
+      - comment
+      summary: Show all projects' tasks
+      description: Returns a all projects' tasks
+      produces:
+      - application/json
+      - application/xml
+      parameters:
+      - name: projectId
+        in: path
+        description: ID of project
+        required: true
+        type: integer
+        format: int64
+      - name: taskId
+        in: path
+        description: ID of task
+        required: true
+        type: integer
+        format: int64
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Comment'
+        404:
+          description: Comment not found
+      security:
+      - uid: []
+      - access-token: []
+      - client: []
+    post:
+      tags:
+      - comment
+      summary: Add a new comment to the task
+      operationId: addComment
+      consumes:
+      - application/json
+      - multipart/form-data
+      - application/xml
+      produces:
+      - application/json
+      - application/xml
+      parameters:
+      - name: projectId
+        in: path
+        description: ID of project
+        required: true
+        type: integer
+        format: int64
+      - name: taskId
+        in: path
+        description: ID of task
+        required: true
+        type: integer
+        format: int64
+#      - name: body
+#        type: string
+#        description: Comment object that needs to be added
+#        required: true
+#        in: formData
+#      - name: attachment
+#        type: file
+#        in: formData
+      - in: body
+        name: comment
+        description: Comment object that needs to be added to current task
+        required: true
+        schema:
+          $ref: '#/definitions/Comment'
+      responses:
+        405:
+          description: Invalid input
+      security:
+      - uid: []
+      - access-token: []
+      - client: []
+  /projects/{projectId}/tasks/{taskId}/comments/{commentId}:
+    delete:
+      tags:
+      - comment
+      summary: Deletes a comment
+      operationId: deleteComment
+      produces:
+      - application/json
+      - application/xml
+      parameters:
+      - name: projectId
+        in: path
+        description: ID of project
+        required: true
+        type: integer
+        format: int64
+      - name: taskId
+        in: path
+        description: ID of task
+        required: true
+        type: integer
+        format: int64
+      - name: commentId
+        in: path
+        description: Comment id to delete
+        required: true
+        type: integer
+        format: int64
+      responses:
+        400:
+          description: Invalid ID supplied
+        404:
+          description: Comment not found
+      security:
+      - uid: []
+      - access-token: []
+      - client: []
+
+  /auth:
+    post:
+      tags:
+      - user
+      summary: Create user
+      description: This can only be done by the logged in user.
+      operationId: createUser
+      produces:
+      - application/json
+      - application/xml
+      consumes:
+      - multipart/form-data
+      - application/xml
+      parameters:
+      - name: username
+        in: formData
+        description: User name
+        required: true
+        type: string
+      - name: password
+        in: formData
+        description: User password
+        required: true
+        type: string
+      - name: password_confirmation
+        in: formData
+        description: User password confirmation
+        required: true
+        type: string
+      responses:
+        default:
+          description: successful operation
+  /auth/sign_in:
+    post:
+      tags:
+      - user
+      summary: Sign in user into the system
+      operationId: signInUser
+      produces:
+      - application/json
+      - application/xml
+      consumes:
+      - multipart/form-data
+      - application/xml
+      parameters:
+      - name: username
+        in: formData
+        description: The user name for login
+        required: true
+        type: string
+      - name: password
+        in: formData
+        description: The password for login in clear text
+        required: true
+        type: string
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: string
+          headers:
+            Content-Type:
+              type: string
+              description: application/vnd.api+json
+            access-token:
+              type: string
+            client:
+              type: string
+            uid:
+              type: string
+            X-Rate-Limit:
+              type: integer
+              format: int32
+              description: calls per hour allowed by the user
+            X-Expires-After:
+              type: string
+              format: date-time
+              description: date in UTC when token expires
+        400:
+          description: Invalid username/password supplied
+  /auth/sign_out:
+    delete:
+      tags:
+      - user
+      summary: Logs out current logged in user session
+      operationId: logoutUser
+      produces:
+      - application/json
+      - application/xml
+      consumes:
+      - multipart/form-data
+      - application/xml
+      parameters:
+      - name: uid
+        in: formData
+        required: true
+        type: string
+      - name: client
+        in: formData
+        required: true
+        type: string
+      - name: access-token
+        in: formData
+        required: true
+        type: string
+      responses:
+        default:
+          description: successful operation
+securityDefinitions:
+  uid:
+    name: uid
+    type: apiKey
+    in: header
+  client:
+    name: client
+    type: apiKey
+    in: header
+  access-token:
+    name: access-token
+    type: apiKey
+    in: header
+definitions:
+  User:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      username:
+        type: string
+        minimum: 3
+        maximum: 50
+        format: /\A[a-zA-Z0-9]*\z/
+      password:
+        type: string
+        format: /\A[a-zA-Z\d]{8}\z/
+    xml:
+      name: User
+  Project:
+    type: object
+    required:
+    - name
+    properties:
+      id:
+        type: integer
+        format: int64
+#      user:
+#        $ref: '#/definitions/User'
+      name:
+        type: string
+        example: my-project
+    xml:
+      name: Project
+  Task:
+    type: object
+    required:
+    - name
+    properties:
+      id:
+        type: integer
+        format: int64
+#      project:
+#        $ref: '#/definitions/Project'
+      name:
+        type: string
+        example: my-task
+      deadline:
+        type: string
+        format: date-time
+        example: '2017-11-11T12:08:54.263Z'
+      position:
+        type: integer
+        format: int64
+      done:
+        type: boolean
+        default: false
+    xml:
+      name: Project
+  Comment:
+    type: object
+    required:
+    - body
+    properties:
+      id:
+        type: integer
+        format: int64
+#      task:
+#        $ref: '#/definitions/Task'
+      body:
+        type: string
+        minimum: 10
+        maximum: 256
+      attachment:
+        type: string
+        format: 'File should be *.png/*.jpg image, less than 10Mb'
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+# Added by API Auto Mocking Plugin
+host: localhost:3000
+# basePath: /abratashov/TManager_v1/1.0.0
+schemes:
+ - http
+ - https

@@ -9,4 +9,6 @@ Devise.setup do |config|
   config.navigational_formats = [:json]
   config.authentication_keys = [ :username ]
   config.password_length = 8..8
+
+  config.secret_key = ENV['DEVISE_SECRET_KEY'] if Rails.env.production?
 end

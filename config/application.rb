@@ -34,3 +34,6 @@ module TManager
     config.api_only = true
   end
 end
+
+Rails.application.default_url_options[:host] = ENV['domain_name'] || Rails.application.secrets[:application][:default_url_options][:host]
+Rails.application.routes.default_url_options[:host] = ENV['domain_name'] || Rails.application.secrets[:application][:routes][:default_url_options][:host]

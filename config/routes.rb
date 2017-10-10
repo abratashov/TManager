@@ -3,17 +3,13 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      resources :projects do
-        resources :tasks do
-          resources :comments, except: [:show, :update]
+      mount_devise_token_auth_for 'User', at: 'auth'
+
+      jsonapi_resources :projects do
+        jsonapi_resources :tasks do
+          jsonapi_resources :comments, except: [:show, :update]
         end
       end
-    end
-  end
-
-  resources :projects, module: 'api/v1' do
-    resources :tasks do
-      resources :comments, except: [:show, :update]
     end
   end
 

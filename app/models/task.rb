@@ -5,8 +5,4 @@ class Task < ApplicationRecord
   validates :name, presence: true
 
   acts_as_list scope: :project
-
-  def update_position(new_position)
-    insert_at(new_position) if position != new_position
-  end
 end

@@ -6,41 +6,33 @@ module Api::V1
     def index
       @tasks = @project.tasks.includes(:project)
 
-      render json: @tasks
+      jsonapi_render json: @tasks
     end
 
     def show
-      render json: @task
+      jsonapi_render json: @task
     end
 
     def create
-      @task = @project.tasks.new(task_params)
+      @task = @project.tasks.new(resource_params)
 
       if @task.save
-        render json: @task, status: :created, location: project_task_url(@project, @task)
+        jsonapi_render json: @task, status: :created
       else
-        render json: @task.errors, status: :unprocessable_entity
+        jsonapi_render_errors json: @task, status: :unprocessable_entity
       end
     end
 
     def update
-      @task.update_position(task_params[:position].to_i) if task_params[:position]
-
-      if @task.update(task_params)
-        render json: @task
+      if @task.update(resource_params)
+        jsonapi_render json: @task
       else
-        render json: @task.errors, status: :unprocessable_entity
+        jsonapi_render_errors json: @task, status: :unprocessable_entity
       end
     end
 
     def destroy
       @task.destroy
     end
-
-    private
-
-      def task_params
-        params.require(:task).permit(:name, :deadline, :done, :position)
-      end
   end
 end

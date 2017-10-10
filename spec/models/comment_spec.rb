@@ -10,9 +10,9 @@ RSpec.describe Comment, type: :model do
     context 'validation an attachment' do
       let(:comment) { create(:comment) }
 
-      let(:attachment_small) { fixuter_file_uploader('files/small.png') }
-      let(:attachment_big) { fixuter_file_uploader('files/big.jpg') }
-      let(:attachment_invalid) { fixuter_file_uploader('files/invalid.gif') }
+      let(:attachment_small) { fixture_file_uploader('files/small.png') }
+      let(:attachment_big) { fixture_file_uploader('files/big.jpg') }
+      let(:attachment_invalid) { fixture_file_uploader('files/invalid.gif') }
 
       it 'valid attachment' do
         comment.attachment = attachment_small

@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Project, type: :model do
   context 'validation & association' do
-    before { FactoryGirl.build(:project) }
+    before { build(:project) }
 
     it { is_expected.to validate_presence_of(:name) }
     it { is_expected.to validate_uniqueness_of(:name) }

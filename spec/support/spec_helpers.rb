@@ -7,7 +7,7 @@ module Spec
   end
 end
 
-def fixuter_file_uploader(filename)
+def fixture_file_uploader(filename)
   Rack::Test::UploadedFile.new(File.open(File.join(Rails.root, "/spec/fixtures/#{filename}")))
 end
 

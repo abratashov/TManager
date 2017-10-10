@@ -5,39 +5,33 @@ module Api::V1
     def index
       @projects = current_user.projects
 
-      render json: @projects
+      jsonapi_render json: @projects
     end
 
     def show
-      render json: @project
+      jsonapi_render json: @project
     end
 
     def create
-      @project = current_user.projects.new(project_params)
+      @project = current_user.projects.new(resource_params)
 
       if @project.save
-        render json: @project, status: :created, location: @project
+        jsonapi_render json: @project, status: :created
       else
-        render json: @project.errors, status: :unprocessable_entity
+        jsonapi_render_errors json: @project, status: :unprocessable_entity
       end
     end
 
     def update
-      if @project.update(project_params)
-        render json: @project
+      if @project.update(resource_params)
+        jsonapi_render json: @project
       else
-        render json: @project.errors, status: :unprocessable_entity
+        jsonapi_render_errors json: @project, status: :unprocessable_entity
       end
     end
 
     def destroy
       @project.destroy
     end
-
-    private
-
-      def project_params
-        params.require(:project).permit(:name)
-      end
   end
 end

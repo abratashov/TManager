@@ -7,8 +7,22 @@ RSpec.describe Api::V1::ProjectsController, type: :controller do
     build(:project, name: 'new project').attributes
   }
 
-  let(:invalid_attributes) {
-    build(:project, name: '').attributes
+  let(:valid_params) {
+    {
+      data: {
+        type: :projects,
+        attributes: valid_attributes.slice('name')
+      }
+    }
+  }
+
+  let(:invalid_params) {
+    {
+      data: {
+        type: :projects,
+        attributes: build(:project, name: '').attributes.slice('name')
+      }
+    }
   }
 
   before {token_sign_in(user)}
@@ -33,53 +47,60 @@ RSpec.describe Api::V1::ProjectsController, type: :controller do
       another_user = create(:user)
       token_sign_in(another_user)
       get :show, params: {id: project.to_param}
-      expect(response).to have_http_status(:not_found)
+      expect(json[:message]).to include("Couldn't find Project")
     end
   end
 
   describe "POST #create" do
     context "with valid params" do
       it "renders a JSON response with the new project" do
-        post :create, params: {project: valid_attributes}
+        post :create, params: valid_params
         expect(response).to have_http_status(:created)
         expect(response.content_type).to eq('application/vnd.api+json')
-        expect(response.location).to eq(project_url(Project.last))
+        expect(json[:data][:links][:self]).to eq(api_v1_project_url(Project.last))
       end
     end
 
     context "with invalid params" do
       it "renders a JSON response with errors for the new project" do
-        post :create, params: {project: invalid_attributes}
+        post :create, params: invalid_params
         expect(response).to have_http_status(:unprocessable_entity)
         expect(response.content_type).to eq('application/vnd.api+json')
-        expect(json[:name]). to include("can't be blank")
+        expect(json[:errors]). to include(include(title: "can't be blank"))
       end
     end
   end
 
   describe "PUT #update" do
+    let(:project) { user.projects.create(valid_attributes) }
+
     context "with valid params" do
       let(:new_attributes) {
-        { name: 'New Name' }
+        {
+          data: {
+            type: :projects,
+            id: project.id,
+            attributes: { name: 'New Name' }
+          }
+        }
       }
 
       it "updates the requested project" do
-        project = user.projects.create(valid_attributes)
-        put :update, params: {id: project.to_param, project: new_attributes}
+        put :update, params: {id: project.to_param }.merge(new_attributes)
         project.reload
-        expect(project.name).to eq new_attributes[:name]
-        expect(json[:data]).to include(attributes: {name: new_attributes[:name]})
+        expect(project.name).to eq new_attributes[:data][:attributes][:name]
+        expect(json[:data][:attributes]).to include(new_attributes[:data][:attributes])
       end
     end
 
     context "with invalid params" do
       it "renders a JSON response with errors for the project" do
-        project = user.projects.create(valid_attributes)
-
-        put :update, params: {id: project.to_param, project: invalid_attributes}
+        put :update, params: {
+          id: project.to_param
+        }.merge(invalid_params.deep_merge(data: {id: project.id}))
         expect(response).to have_http_status(:unprocessable_entity)
         expect(response.content_type).to eq('application/vnd.api+json')
-        expect(json[:name]). to include("can't be blank")
+        expect(json[:errors]). to include(include(title: "can't be blank"))
       end
     end
   end

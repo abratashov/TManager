@@ -1,6 +1,3 @@
-ActiveModelSerializers.config.adapter = :json_api
-
-# https://github.com/rails-api/active_model_serializers/issues/1027
 api_mime_types = %W(
   application/vnd.api+json
   text/x-json

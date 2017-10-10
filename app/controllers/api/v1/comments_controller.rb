@@ -1,5 +1,5 @@
 module Api::V1
-  class CommentsController < ApplicationController
+  class CommentsController < ApiController
     load_and_authorize_resource :project, through: :current_user
     load_and_authorize_resource :task, through: :project
     load_and_authorize_resource :comment, through: :task
@@ -7,27 +7,21 @@ module Api::V1
     def index
       @comments = @task.comments
 
-      render json: @comments
+      jsonapi_render json: @comments
     end
 
     def create
-      @comment = @task.comments.new(comment_params)
+      @comment = @task.comments.new(resource_params)
 
       if @comment.save
-        render json: @comment, status: :created, location: project_task_comment_url(@project, @task, @comment)
+        jsonapi_render json: @comment, status: :created
       else
-        render json: @comment.errors, status: :unprocessable_entity
+        jsonapi_render_errors json: @comment, status: :unprocessable_entity
       end
     end
 
     def destroy
       @comment.destroy
     end
-
-    private
-
-      def comment_params
-        params.require(:comment).permit(:body, :attachment)
-      end
   end
 end

@@ -1,0 +1,13 @@
+test: &default
+  address: 'localhost'
+  port: 25
+  domain: 'localhost'
+  enable_starttls_auto: false
+
+development:
+  <<: *default
+
+production:
+  address: localhost
+  port: 25
+  domain: t-manager-board.herokuapp.com

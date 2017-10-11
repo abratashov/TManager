@@ -2,7 +2,7 @@ module Api::V1
   class CommentResource < JSONAPI::Resource
     include Rails.application.routes.url_helpers
 
-    attributes :id, :body, :attachment
+    attributes :body, :attachment
 
     def custom_links(options)
       if @model.persisted?

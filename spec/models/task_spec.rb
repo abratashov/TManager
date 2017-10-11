@@ -18,8 +18,7 @@ RSpec.describe Task, type: :model do
     it 'move bottom' do
       expect(task1.position).to eq 1
       expect(task2.position).to eq 2
-      task1.position = 2
-      task1.save
+      task1.insert_at(2)
       task2.reload
       expect(task1.position).to eq 2
       expect(task2.position).to eq 1

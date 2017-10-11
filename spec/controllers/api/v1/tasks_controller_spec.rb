@@ -90,7 +90,7 @@ RSpec.describe Api::V1::TasksController, type: :controller do
         }
       }
 
-      it "updates the requested task" do
+      it "updates the requested task & checking position" do
         put :update, params: { project_id: project.id, id: task1.to_param}.merge(new_attributes)
         task1.reload
         expect(task1.name).to eq new_attributes[:data][:attributes][:name]

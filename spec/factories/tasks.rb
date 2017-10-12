@@ -6,5 +6,10 @@ FactoryGirl.define do
     done false
     project
     comments_count 0
+
+    trait :factory_task do
+      id 100
+      name 'factory task'
+    end
   end
 end

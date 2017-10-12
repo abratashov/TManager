@@ -61,7 +61,7 @@ RSpec.describe Api::V1::CommentsController, type: :controller do
 
         expect(response).to have_http_status(:created)
         expect(response.content_type).to eq('application/vnd.api+json')
-        expect(json[:data][:links][:self]).to eq(api_v1_project_task_comment_url(project, task, Comment.last))
+        expect(json[:data][:links][:self]).to include(api_v1_project_task_comment_path(project, task, Comment.last))
         expect(json[:data][:attributes][:attachment][:url]).to include(filename)
       end
     end

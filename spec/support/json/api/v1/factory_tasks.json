@@ -1,0 +1,18 @@
+{
+  "data": [
+    {
+      "id": "100",
+      "type": "tasks",
+      "links": {
+        "self": "http://www.example.com/api/v1/projects/100/tasks/100"
+      },
+      "attributes": {
+        "name": "factory task",
+        "deadline": "2017-09-28T21:32:06.000Z",
+        "position": 1,
+        "done": false,
+        "comments-count": 0
+      }
+    }
+  ]
+}

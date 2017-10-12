@@ -61,7 +61,7 @@ RSpec.describe Api::V1::TasksController, type: :controller do
         post :create, params: { project_id: project.id}.merge(valid_params)
         expect(response).to have_http_status(:created)
         expect(response.content_type).to eq('application/vnd.api+json')
-        expect(json[:data][:links][:self]).to eq(api_v1_project_task_url(project, Task.last))
+        expect(json[:data][:links][:self]).to include(api_v1_project_task_path(project, Task.last))
       end
     end
 

@@ -1,0 +1,12 @@
+{
+  "data": {
+    "id": "100",
+    "type": "projects",
+    "links": {
+      "self": "http://www.example.com/api/v1/projects/100"
+    },
+    "attributes": {
+      "name": "factory project"
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "data": {
+    "id": "100",
+    "type": "comments",
+    "links": {
+      "self": "http://www.example.com/api/v1/projects/100/tasks/100/comments/100"
+    },
+    "attributes": {
+      "body": "factory comment",
+      "attachment": {
+        "url": null
+      }
+    }
+  }
+}

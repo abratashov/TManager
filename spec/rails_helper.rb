@@ -66,7 +66,8 @@ RSpec.configure do |config|
   end
   config.include FactoryGirl::Syntax::Methods
   config.include JsonSpec::Helpers
-  config.include Spec::Helpers, :type => :controller
+  config.include Spec::Helpers, type: :controller
+  config.include Spec::Helpers, type: :request
 end
 
 Shoulda::Matchers.configure do |config|

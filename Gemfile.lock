@@ -56,7 +56,6 @@ GEM
     carrierwave-i18n (0.2.0)
     concurrent-ruby (1.0.5)
     crass (1.0.2)
-    database_cleaner (1.6.1)
     devise (4.3.0)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
@@ -219,7 +218,6 @@ DEPENDENCIES
   cancancan (~> 2.0)
   carrierwave (~> 1.0)
   carrierwave-i18n
-  database_cleaner
   devise
   devise_token_auth
   factory_girl_rails

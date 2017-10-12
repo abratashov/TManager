@@ -16,3 +16,7 @@ def token_sign_in(user)
   auth_headers = user.create_new_auth_token
   request.headers.merge!(auth_headers)
 end
+
+def factory_v1_json(filename)
+  JSON.parse(File.read("#{Rails.root}/spec/support/json/api/v1/#{filename}.json"))
+end

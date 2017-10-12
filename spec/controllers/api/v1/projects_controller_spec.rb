@@ -114,4 +114,45 @@ RSpec.describe Api::V1::ProjectsController, type: :controller do
     end
   end
 
+  describe 'user ability' do
+    let(:project) { create(:project, user: user) }
+    let(:ability) { Object.new }
+
+    before do
+      allow(Project).to receive(:find).and_return(project)
+      ability.extend(CanCan::Ability)
+      ability.can :manage, :all
+      allow(@controller).to receive(:current_ability).and_return(ability)
+    end
+
+    it 'cancan doesnt allow :index' do
+      ability.cannot :index, Project
+      get :index, params: {}
+      expect(json[:message]).to include('You are not authorized')
+    end
+
+    it 'cancan doesnt allow :show' do
+      ability.cannot :show, Project
+      get :show, params: { id: project.id }
+      expect(json[:message]).to include('You are not authorized')
+    end
+
+    it 'cancan doesnt allow :create' do
+      ability.cannot :create, Project
+      post :create, params: valid_params
+      expect(json[:message]).to include('You are not authorized')
+    end
+
+    it 'cancan doesnt allow :update' do
+      ability.cannot :update, Project
+      put :update, params: valid_params.deep_merge(id: project.id, data: {id: project.id})
+      expect(json[:message]).to include('You are not authorized')
+    end
+
+    it 'cancan doesnt allow :destroy' do
+      ability.cannot :destroy, Project
+      delete :destroy, params: { id: project.id }
+      expect(json[:message]).to include('You are not authorized')
+    end
+  end
 end

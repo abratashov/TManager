@@ -85,4 +85,37 @@ RSpec.describe Api::V1::CommentsController, type: :controller do
     end
   end
 
+  describe 'user ability' do
+    let(:project) { create(:project, user: user) }
+    let(:task) { create(:task, project: project) }
+    let(:comment) { create(:comment, task: task) }
+    let(:ability) { Object.new }
+
+    before do
+      allow(Project).to receive(:find).and_return(project)
+      allow(Task).to receive(:find).and_return(task)
+      allow(Comment).to receive(:find).and_return(comment)
+      ability.extend(CanCan::Ability)
+      ability.can :manage, :all
+      allow(@controller).to receive(:current_ability).and_return(ability)
+    end
+
+    it 'cancan doesnt allow :index' do
+      ability.cannot :index, Comment
+      get :index, params: { project_id: project.id, task_id: task.id }
+      expect(json[:message]).to include('You are not authorized')
+    end
+
+    it 'cancan doesnt allow :create' do
+      ability.cannot :create, Comment
+      post :create, params: valid_params.merge(project_id: project.id, task_id: task.id)
+      expect(json[:message]).to include('You are not authorized')
+    end
+
+    it 'cancan doesnt allow :destroy' do
+      ability.cannot :destroy, Comment
+      delete :destroy, params: {project_id: project.id, task_id: task.id, id: comment.id }
+      expect(json[:message]).to include('You are not authorized')
+    end
+  end
 end

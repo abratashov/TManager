@@ -1,17 +1,17 @@
 require_relative 'boot'
 
-require "rails"
+require 'rails'
 # Pick the frameworks you want:
-require "active_model/railtie"
-require "active_job/railtie"
-require "active_record/railtie"
-require "action_controller/railtie"
-require "action_mailer/railtie"
-require "action_view/railtie"
-require "action_cable/engine"
-# require "sprockets/railtie"
-require "rails/test_unit/railtie"
-load "app/middleware/catch_json_parse_errors.rb"
+require 'active_model/railtie'
+require 'active_job/railtie'
+require 'active_record/railtie'
+require 'action_controller/railtie'
+require 'action_mailer/railtie'
+require 'action_view/railtie'
+require 'action_cable/engine'
+# require 'sprockets/railtie'
+require 'rails/test_unit/railtie'
+load 'app/middleware/catch_json_parse_errors.rb'
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -35,5 +35,8 @@ module TManager
   end
 end
 
-Rails.application.default_url_options[:host] = ENV['domain_name'] || Rails.application.secrets[:application][:default_url_options][:host]
-Rails.application.routes.default_url_options[:host] = ENV['domain_name'] || Rails.application.secrets[:application][:routes][:default_url_options][:host]
+host = Rails.application.secrets[:application][:default_url_options][:host]
+Rails.application.default_url_options[:host] = ENV['domain_name'] || host
+
+routes_host = Rails.application.secrets[:application][:routes][:default_url_options][:host]
+Rails.application.routes.default_url_options[:host] = ENV['domain_name'] || routes_host

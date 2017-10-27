@@ -32,33 +32,33 @@ RSpec.describe Api::V1::CommentsController, type: :controller do
 
   before { token_sign_in(user) }
 
-  describe "GET #index" do
+  describe 'GET #index' do
     let(:another_user) { create(:user) }
 
-    it "returns a success response" do
+    it 'returns a success response' do
       comment = task.comments.create!(valid_attributes)
       get :index, params: { project_id: project.id, task_id: task.id }
       expect(json[:data].first[:attributes]).to include(body: comment.body)
     end
 
-    it "returns an error for another user" do
+    it 'returns an error for another user' do
       token_sign_in(another_user)
       get :index, params: { project_id: project.id, task_id: task.id }
       expect(json[:errors].first[:title]).to include("Couldn't find Project")
     end
   end
 
-  describe "POST #create" do
-    context "with valid params" do
-      it "renders a JSON response with the new comment" do
+  describe 'POST #create' do
+    context 'with valid params' do
+      it 'renders a JSON response with the new comment' do
         post :create, params: {
           project_id: project.id,
           task_id: task.id
-        }.merge(valid_params.deep_merge({
-          data: {
-            attributes: { attachment: attachment }
-          }
-        }))
+        }.merge(valid_params.deep_merge(
+                  data: {
+                    attributes: { attachment: attachment }
+                  }
+        ))
 
         expect(response).to have_http_status(:created)
         expect(response.content_type).to eq('application/vnd.api+json')
@@ -67,9 +67,9 @@ RSpec.describe Api::V1::CommentsController, type: :controller do
       end
     end
 
-    context "with invalid params" do
-      it "renders a JSON response with errors for the new comment" do
-        post :create, params: { project_id: project.id, task_id: task.id}.merge(invalid_params)
+    context 'with invalid params' do
+      it 'renders a JSON response with errors for the new comment' do
+        post :create, params: { project_id: project.id, task_id: task.id }.merge(invalid_params)
         expect(response).to have_http_status(:unprocessable_entity)
         expect(response.content_type).to eq('application/vnd.api+json')
         expect(json[:errors]). to include(include(title: 'is too short (minimum is 10 characters)'))
@@ -77,8 +77,8 @@ RSpec.describe Api::V1::CommentsController, type: :controller do
     end
   end
 
-  describe "DELETE #destroy" do
-    it "destroys the requested comment" do
+  describe 'DELETE #destroy' do
+    it 'destroys the requested comment' do
       comment = task.comments.create!(valid_attributes)
       expect {
         delete :destroy, params: { project_id: project.id, task_id: task.id, id: comment.to_param }
@@ -115,7 +115,7 @@ RSpec.describe Api::V1::CommentsController, type: :controller do
 
     it 'cancan doesnt allow :destroy' do
       ability.cannot :destroy, Comment
-      delete :destroy, params: {project_id: project.id, task_id: task.id, id: comment.id }
+      delete :destroy, params: { project_id: project.id, task_id: task.id, id: comment.id }
       expect(json[:errors].first[:title]).to include('You are not authorized')
     end
   end

@@ -1,0 +1,37 @@
+Documentation:
+  Enabled: false
+
+Metrics/LineLength:
+  Max: 120
+
+AllCops:
+  TargetRubyVersion: 2.3
+  Exclude:
+    - db/seeds/**/*
+    - db/migrate/**/*
+    - db/schema.rb
+    - db/seeds.rb
+    - Rakefile
+    - bin/**
+    - spec/spec_helper.rb
+    - config/initializers/**/*
+
+Rails:
+  Enabled: true
+
+Style/IndentationConsistency:
+  EnforcedStyle: rails
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/BlockDelimiters:
+  Exclude:
+    - 'spec/**/*'
+
+Style/BlockLength:
+  Exclude:
+    - 'Rakefile'
+    - '**/*.rake'
+    - 'config/**/*.rb'
+    - 'spec/**/*.rb'

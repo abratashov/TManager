@@ -7,7 +7,7 @@ Rails.application.routes.draw do
 
       jsonapi_resources :projects do
         jsonapi_resources :tasks do
-          jsonapi_resources :comments, except: [:show, :update]
+          jsonapi_resources :comments, except: %i[show update]
         end
       end
     end

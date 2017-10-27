@@ -40,12 +40,12 @@ RSpec.describe 'Comments', type: :request do
 
       expect(response).to have_http_status(:created)
       expect(json.to_json).to be_json_eql(factory_v1_json('factory_comment')
-        .deep_merge({ 'data' => {
-          'id' => created_comment.id.to_s,
-          'links' => {
-            'self' => api_v1_project_task_comment_url(project, task, created_comment)
-          }
-        }}).to_json)
+        .deep_merge('data' => {
+                      'id' => created_comment.id.to_s,
+                      'links' => {
+                        'self' => api_v1_project_task_comment_url(project, task, created_comment)
+                      }
+                    }).to_json)
     end
   end
 end

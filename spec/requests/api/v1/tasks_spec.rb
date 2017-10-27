@@ -29,18 +29,18 @@ RSpec.describe 'Tasks', type: :request do
     it 'update task' do
       params = {
         data: {
-          type: :tasks, id: task.id, attributes: { name: 'updated name'}
+          type: :tasks, id: task.id, attributes: { name: 'updated name' }
         }
       }
 
       put api_v1_project_task_path(project, task), params: params, headers: tokens
       expect(response).to have_http_status(200)
       expect(json.to_json).to be_json_eql(factory_task
-        .deep_merge({ 'data' => {
-          'attributes' => {
-            'name' => params[:data][:attributes][:name]
-          }
-        }}).to_json)
+        .deep_merge('data' => {
+                      'attributes' => {
+                        'name' => params[:data][:attributes][:name]
+                      }
+                    }).to_json)
     end
 
     it 'destroy task' do
@@ -50,7 +50,6 @@ RSpec.describe 'Tasks', type: :request do
   end
 
   describe 'with new object' do
-
     it 'create new task' do
       task = build(:task, :factory_task, project: project)
       params = {
@@ -64,12 +63,12 @@ RSpec.describe 'Tasks', type: :request do
 
       expect(response).to have_http_status(:created)
       expect(json.to_json).to be_json_eql(factory_v1_json('factory_task')
-        .deep_merge({ 'data' => {
-          'id' => created_task.id.to_s,
-          'links' => {
-            'self' => api_v1_project_task_url(project, created_task)
-          }
-        }}).to_json)
+        .deep_merge('data' => {
+                      'id' => created_task.id.to_s,
+                      'links' => {
+                        'self' => api_v1_project_task_url(project, created_task)
+                      }
+                    }).to_json)
     end
   end
 end

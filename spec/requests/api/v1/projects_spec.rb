@@ -28,18 +28,18 @@ RSpec.describe 'Projects', type: :request do
     it 'update project' do
       params = {
         data: {
-          type: :projects, id: project.id, attributes: { name: 'updated name'}
+          type: :projects, id: project.id, attributes: { name: 'updated name' }
         }
       }
 
       put api_v1_project_path(project), params: params, headers: tokens
       expect(response).to have_http_status(200)
       expect(json.to_json).to be_json_eql(factory_project
-        .deep_merge({ 'data' => {
-          'attributes' => {
-            'name' => params[:data][:attributes][:name]
-          }
-        }}).to_json)
+        .deep_merge('data' => {
+                      'attributes' => {
+                        'name' => params[:data][:attributes][:name]
+                      }
+                    }).to_json)
     end
 
     it 'destroy project' do
@@ -62,12 +62,12 @@ RSpec.describe 'Projects', type: :request do
 
       expect(response).to have_http_status(:created)
       expect(json.to_json).to be_json_eql(factory_v1_json('factory_project')
-        .deep_merge({ 'data' => {
-          'id' => created_project.id.to_s,
-          'links' => {
-            'self' => api_v1_project_url(created_project)
-          }
-        }}).to_json)
+        .deep_merge('data' => {
+                      'id' => created_project.id.to_s,
+                      'links' => {
+                        'self' => api_v1_project_url(created_project)
+                      }
+                    }).to_json)
     end
   end
 end

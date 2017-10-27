@@ -1,5 +1,4 @@
 class AttachmentUploader < CarrierWave::Uploader::Base
-
   # Include RMagick or MiniMagick support:
   # include CarrierWave::RMagick
   # include CarrierWave::MiniMagick
@@ -12,7 +11,13 @@ class AttachmentUploader < CarrierWave::Uploader::Base
   # This is a sensible default for uploaders that are meant to be mounted:
   # :nocov:
   def store_dir
-    "uploads/#{model.class.to_s.underscore}/#{model.created_at.year}/#{model.created_at.month}/#{model.created_at.day}/#{model.id}"
+    [
+      :uploads,
+      model.class.to_s.underscore,
+      model.created_at.month,
+      model.created_at.day,
+      model.id
+    ].join('/')
   end
   # :nocov:
 
@@ -39,7 +44,7 @@ class AttachmentUploader < CarrierWave::Uploader::Base
   # Add a white list of extensions which are allowed to be uploaded.
   # For images you might use something like this:
   def extension_whitelist
-    %w(jpg png)
+    %w[jpg png]
   end
 
   # Override the filename of the uploaded files:

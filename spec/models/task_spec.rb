@@ -24,5 +24,4 @@ RSpec.describe Task, type: :model do
       expect(task2.position).to eq 1
     end
   end
-
 end

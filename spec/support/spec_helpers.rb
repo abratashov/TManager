@@ -8,7 +8,7 @@ module Spec
 end
 
 def fixture_file_uploader(filename)
-  Rack::Test::UploadedFile.new(File.open(File.join(Rails.root, "/spec/fixtures/#{filename}")))
+  Rack::Test::UploadedFile.new(File.open(Rails.root.join('spec', 'fixtures', filename)))
 end
 
 # https://github.com/lynndylanhurley/devise_token_auth/issues/577
@@ -18,5 +18,6 @@ def token_sign_in(user)
 end
 
 def factory_v1_json(filename)
-  JSON.parse(File.read("#{Rails.root}/spec/support/json/api/v1/#{filename}.json"))
+  full_path = Rails.root.join('spec', 'support', 'json', 'api', 'v1', "#{filename}.json")
+  JSON.parse(File.read(full_path))
 end

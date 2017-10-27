@@ -7,7 +7,7 @@ RSpec.describe 'Comments', type: :request do
   let(:task) { create(:task, :factory_task, project: project) }
 
   describe 'with persisted object' do
-    let(:comment) { create(:comment, :factory_comment, task: task) }
+    let!(:comment) { create(:comment, :factory_comment, task: task) }
 
     it 'returns unauthorized status' do
       get api_v1_project_task_comments_path(project, task)
@@ -15,7 +15,6 @@ RSpec.describe 'Comments', type: :request do
     end
 
     it 'shows comments' do
-      comment # init
       get api_v1_project_task_comments_path(project, task), headers: tokens
       expect(response).to have_http_status(200)
       expect(json.to_json).to be_json_eql(factory_v1_json('factory_comments').to_json)

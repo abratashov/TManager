@@ -5,18 +5,16 @@ module Api::V1
     load_and_authorize_resource :comment, through: :task
 
     def index
-      @comments = @task.comments
-
-      jsonapi_render json: @comments
+      jsonapi_render json: @task.comments
     end
 
     def create
-      @comment = @task.comments.new(resource_params)
+      comment = @task.comments.new(resource_params)
 
-      if @comment.save
-        jsonapi_render json: @comment, status: :created
+      if comment.save
+        jsonapi_render json: comment, status: :created
       else
-        jsonapi_render_errors json: @comment, status: :unprocessable_entity
+        jsonapi_render_errors json: comment, status: :unprocessable_entity
       end
     end
 

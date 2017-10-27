@@ -4,9 +4,7 @@ module Api::V1
     load_and_authorize_resource :task, through: :project
 
     def index
-      @tasks = @project.tasks.includes(:project)
-
-      jsonapi_render json: @tasks
+      jsonapi_render json: @project.tasks.ordered.includes(:project)
     end
 
     def show
@@ -14,12 +12,12 @@ module Api::V1
     end
 
     def create
-      @task = @project.tasks.new(resource_params)
+      task = @project.tasks.new(resource_params)
 
-      if @task.save
-        jsonapi_render json: @task, status: :created
+      if task.save
+        jsonapi_render json: task, status: :created
       else
-        jsonapi_render_errors json: @task, status: :unprocessable_entity
+        jsonapi_render_errors json: task, status: :unprocessable_entity
       end
     end
 

@@ -4,5 +4,7 @@ class Task < ApplicationRecord
 
   validates :name, presence: true
 
+  scope :ordered, -> { order(position: :asc) }
+
   acts_as_list scope: :project
 end

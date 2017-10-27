@@ -2,8 +2,8 @@ require 'rails_helper'
 
 RSpec.describe Api::V1::CommentsController, type: :controller do
   let(:user) { create(:user) }
-  let(:project) { user.projects.create(build(:project).attributes) }
-  let(:task) { project.tasks.create(build(:task).attributes) }
+  let(:project) { create(:project, user: user) }
+  let(:task) { create(:task, project: project) }
 
   let(:valid_attributes) {
     build(:comment, body: 'new comment').attributes
@@ -33,6 +33,8 @@ RSpec.describe Api::V1::CommentsController, type: :controller do
   before { token_sign_in(user) }
 
   describe "GET #index" do
+    let(:another_user) { create(:user) }
+
     it "returns a success response" do
       comment = task.comments.create!(valid_attributes)
       get :index, params: { project_id: project.id, task_id: task.id }
@@ -40,10 +42,9 @@ RSpec.describe Api::V1::CommentsController, type: :controller do
     end
 
     it "returns an error for another user" do
-      another_user = create(:user)
       token_sign_in(another_user)
       get :index, params: { project_id: project.id, task_id: task.id }
-      expect(json[:message]).to include("Couldn't find Project")
+      expect(json[:errors].first[:title]).to include("Couldn't find Project")
     end
   end
 
@@ -103,19 +104,19 @@ RSpec.describe Api::V1::CommentsController, type: :controller do
     it 'cancan doesnt allow :index' do
       ability.cannot :index, Comment
       get :index, params: { project_id: project.id, task_id: task.id }
-      expect(json[:message]).to include('You are not authorized')
+      expect(json[:errors].first[:title]).to include('You are not authorized')
     end
 
     it 'cancan doesnt allow :create' do
       ability.cannot :create, Comment
       post :create, params: valid_params.merge(project_id: project.id, task_id: task.id)
-      expect(json[:message]).to include('You are not authorized')
+      expect(json[:errors].first[:title]).to include('You are not authorized')
     end
 
     it 'cancan doesnt allow :destroy' do
       ability.cannot :destroy, Comment
       delete :destroy, params: {project_id: project.id, task_id: task.id, id: comment.id }
-      expect(json[:message]).to include('You are not authorized')
+      expect(json[:errors].first[:title]).to include('You are not authorized')
     end
   end
 end

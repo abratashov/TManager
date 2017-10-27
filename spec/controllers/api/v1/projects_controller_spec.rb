@@ -36,6 +36,7 @@ RSpec.describe Api::V1::ProjectsController, type: :controller do
   end
 
   describe "GET #show" do
+    let(:another_user) { create(:user) }
     let(:project) { user.projects.create(valid_attributes) }
 
     it "returns a success response" do
@@ -44,10 +45,9 @@ RSpec.describe Api::V1::ProjectsController, type: :controller do
     end
 
     it "returns an error for another user" do
-      another_user = create(:user)
       token_sign_in(another_user)
       get :show, params: {id: project.to_param}
-      expect(json[:message]).to include("Couldn't find Project")
+      expect(json[:errors].first[:title]).to include("Couldn't find Project")
     end
   end
 
@@ -128,31 +128,31 @@ RSpec.describe Api::V1::ProjectsController, type: :controller do
     it 'cancan doesnt allow :index' do
       ability.cannot :index, Project
       get :index, params: {}
-      expect(json[:message]).to include('You are not authorized')
+      expect(json[:errors].first[:title]).to include('You are not authorized')
     end
 
     it 'cancan doesnt allow :show' do
       ability.cannot :show, Project
       get :show, params: { id: project.id }
-      expect(json[:message]).to include('You are not authorized')
+      expect(json[:errors].first[:title]).to include('You are not authorized')
     end
 
     it 'cancan doesnt allow :create' do
       ability.cannot :create, Project
       post :create, params: valid_params
-      expect(json[:message]).to include('You are not authorized')
+      expect(json[:errors].first[:title]).to include('You are not authorized')
     end
 
     it 'cancan doesnt allow :update' do
       ability.cannot :update, Project
       put :update, params: valid_params.deep_merge(id: project.id, data: {id: project.id})
-      expect(json[:message]).to include('You are not authorized')
+      expect(json[:errors].first[:title]).to include('You are not authorized')
     end
 
     it 'cancan doesnt allow :destroy' do
       ability.cannot :destroy, Project
       delete :destroy, params: { id: project.id }
-      expect(json[:message]).to include('You are not authorized')
+      expect(json[:errors].first[:title]).to include('You are not authorized')
     end
   end
 end

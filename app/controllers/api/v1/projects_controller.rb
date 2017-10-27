@@ -3,9 +3,7 @@ module Api::V1
     load_and_authorize_resource through: :current_user
 
     def index
-      @projects = current_user.projects
-
-      jsonapi_render json: @projects
+      jsonapi_render json: current_user.projects
     end
 
     def show
@@ -13,12 +11,12 @@ module Api::V1
     end
 
     def create
-      @project = current_user.projects.new(resource_params)
+      project = current_user.projects.new(resource_params)
 
-      if @project.save
-        jsonapi_render json: @project, status: :created
+      if project.save
+        jsonapi_render json: project, status: :created
       else
-        jsonapi_render_errors json: @project, status: :unprocessable_entity
+        jsonapi_render_errors json: project, status: :unprocessable_entity
       end
     end
 

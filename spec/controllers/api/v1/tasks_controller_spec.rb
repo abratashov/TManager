@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe Api::V1::TasksController, type: :controller do
   let(:user) { create(:user) }
 
-  let(:project) { user.projects.create(build(:project).attributes) }
+  let(:project) { create(:project, user: user) }
 
   let(:valid_attributes) {
     build(:task, name: 'new task').attributes
@@ -38,6 +38,7 @@ RSpec.describe Api::V1::TasksController, type: :controller do
   end
 
   describe "GET #show" do
+    let(:another_user) { create(:user) }
     let(:task) { project.tasks.create!(valid_attributes) }
 
     it "returns a success response" do
@@ -47,10 +48,9 @@ RSpec.describe Api::V1::TasksController, type: :controller do
     end
 
     it "returns an error for another user" do
-      another_user = create(:user)
       token_sign_in(another_user)
       get :show, params: { project_id: project.id, id: task.to_param }
-      expect(json[:message]).to include("Couldn't find Project")
+      expect(json[:errors].first[:title]).to include("Couldn't find Project")
     end
   end
 
@@ -137,31 +137,31 @@ RSpec.describe Api::V1::TasksController, type: :controller do
     it 'cancan doesnt allow :index' do
       ability.cannot :index, Task
       get :index, params: { project_id: project.id }
-      expect(json[:message]).to include('You are not authorized')
+      expect(json[:errors].first[:title]).to include('You are not authorized')
     end
 
     it 'cancan doesnt allow :show' do
       ability.cannot :show, Task
       get :show, params: { project_id: project.id, id: task.id }
-      expect(json[:message]).to include('You are not authorized')
+      expect(json[:errors].first[:title]).to include('You are not authorized')
     end
 
     it 'cancan doesnt allow :create' do
       ability.cannot :create, Task
       post :create, params: valid_params.merge(project_id: project.id)
-      expect(json[:message]).to include('You are not authorized')
+      expect(json[:errors].first[:title]).to include('You are not authorized')
     end
 
     it 'cancan doesnt allow :update' do
       ability.cannot :update, Task
       put :update, params: valid_params.deep_merge(project_id: project.id, id: task.id, data: {id: task.id})
-      expect(json[:message]).to include('You are not authorized')
+      expect(json[:errors].first[:title]).to include('You are not authorized')
     end
 
     it 'cancan doesnt allow :destroy' do
       ability.cannot :destroy, Task
       delete :destroy, params: {project_id: project.id, id: task.id }
-      expect(json[:message]).to include('You are not authorized')
+      expect(json[:errors].first[:title]).to include('You are not authorized')
     end
   end
 end

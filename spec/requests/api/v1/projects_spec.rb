@@ -5,7 +5,7 @@ RSpec.describe 'Projects', type: :request do
   let(:tokens) { user.create_new_auth_token }
 
   describe 'with persisted object' do
-    let(:project) { create(:project, :factory_project, user: user) }
+    let!(:project) { create(:project, :factory_project, user: user) }
     let(:factory_project) { factory_v1_json('factory_project') }
 
     it 'returns unauthorized status' do
@@ -14,7 +14,6 @@ RSpec.describe 'Projects', type: :request do
     end
 
     it 'shows projects' do
-      project # init
       get api_v1_projects_path, headers: tokens
       expect(response).to have_http_status(200)
       expect(json.to_json).to be_json_eql(factory_v1_json('factory_projects').to_json)

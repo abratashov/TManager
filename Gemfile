@@ -42,7 +42,7 @@ group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
 
   # Testing
-  gem 'factory_girl_rails'
+  gem 'factory_bot_rails'
   gem 'ffaker'
   gem 'json_spec'
   gem 'rspec'
@@ -53,6 +53,8 @@ group :development, :test do
 
   gem 'rubycritic', require: false
   gem 'rubocop', '~> 0.51.0', require: false
+
+  gem 'dotenv'
 end
 
 group :test do

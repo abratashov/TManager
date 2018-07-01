@@ -32,13 +32,13 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :smtp
 
   config.action_mailer.smtp_settings = {
-    address: Rails.application.secrets.action_mailer[:smtp_settings][:address],
-    port: Rails.application.secrets.action_mailer[:smtp_settings][:port]
+    address: ENV['SMTP_SETTINGS_ADDRESS'],
+    port: ENV['SMTP_SETTINGS_PORT']
   }
 
   config.action_mailer.default_url_options = {
-    host: Rails.application.secrets.action_mailer[:default_url_options][:host],
-    port: Rails.application.secrets.action_mailer[:default_url_options][:port]
+    host: ENV['DEFAULT_URL_OPTIONS_HOST'],
+    port: ENV['DEFAULT_URL_OPTIONS_PORT']
   }
 
   # Print deprecation notices to the Rails logger.

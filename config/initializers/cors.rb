@@ -5,9 +5,13 @@
 
 # Read more: https://github.com/cyu/rack-cors
 
+hosts = ['localhost:3000', 'localhost:8080', '127.0.0.1:3000', '127.0.0.1:8080']
+hosts << ENV['APP_DEFAULT_URL_OPTIONS_HOST'] if ENV['APP_DEFAULT_URL_OPTIONS_HOST']
+
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    origins 'localhost:3000', 'localhost:8080', '127.0.0.1:3000', '127.0.0.1:8080', ENV['domain_name'] || Rails.application.secrets[:application][:default_url_options][:host]
+    origins hosts
+
     resource '*',
       headers: :any,
       methods: [:get, :post, :put, :patch, :delete, :options, :head],

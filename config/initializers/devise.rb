@@ -10,5 +10,5 @@ Devise.setup do |config|
   config.authentication_keys = [ :username ]
   config.password_length = 8..8
 
-  config.secret_key = ENV['DEVISE_SECRET_KEY'] if Rails.env.production?
+  config.secret_key = ENV['DEVISE_SECRET_KEY']
 end

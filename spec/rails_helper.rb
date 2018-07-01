@@ -63,7 +63,7 @@ RSpec.configure do |config|
       FileUtils.rm_rf(Dir[Rails.root.join('spec', 'support', 'uploads')])
     end
   end
-  config.include FactoryGirl::Syntax::Methods
+  config.include FactoryBot::Syntax::Methods
   config.include JsonSpec::Helpers
   config.include Spec::Helpers, type: :controller
   config.include Spec::Helpers, type: :request

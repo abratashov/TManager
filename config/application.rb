@@ -19,6 +19,15 @@ Bundler.require(*Rails.groups)
 
 module TManager
   class Application < Rails::Application
+
+    if defined?(Dotenv)
+      dotenv_files = [
+        Rails.root.join(".env.#{Rails.env}"),
+        Rails.root.join(".env")
+      ]
+      Dotenv.load(*dotenv_files)
+    end
+
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 5.1
 
@@ -35,8 +44,8 @@ module TManager
   end
 end
 
-host = Rails.application.secrets[:application][:default_url_options][:host]
+host = ENV['APP_DEFAULT_URL_OPTIONS_HOST']
 Rails.application.default_url_options[:host] = ENV['domain_name'] || host
 
-routes_host = Rails.application.secrets[:application][:routes][:default_url_options][:host]
+routes_host = ENV['APP_ROUTES_DEFAULT_URL_OPTIONS_HOST']
 Rails.application.routes.default_url_options[:host] = ENV['domain_name'] || routes_host

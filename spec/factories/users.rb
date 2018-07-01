@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :user do
     username { "#{FFaker::Name.first_name}#{SecureRandom.hex(4)}" }
     password 'Pass0001'

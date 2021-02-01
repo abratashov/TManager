@@ -66,7 +66,7 @@ RSpec.describe 'Tasks', type: :request do
         .deep_merge('data' => {
                       'id' => created_task.id.to_s,
                       'links' => {
-                        'self' => api_v1_project_task_url(project, created_task)
+                        'self' => api_v1_task_url(created_task)
                       }
                     }).to_json)
     end

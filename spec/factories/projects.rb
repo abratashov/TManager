@@ -4,8 +4,8 @@ FactoryBot.define do
     user
 
     trait :factory_project do
-      id 100
-      name 'factory project'
+      id { 100 }
+      name { 'factory project' }
     end
   end
 end

@@ -6,7 +6,7 @@ module Api
       attributes :name, :deadline, :position, :done, :comments_count
 
       def custom_links(_)
-        { self: api_v1_project_task_url(@model.project_id, @model) } if @model.persisted?
+        { self: api_v1_task_url(@model) } if @model.persisted?
       end
     end
   end

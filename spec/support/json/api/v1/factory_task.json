@@ -3,7 +3,7 @@
     "id": "100",
     "type": "tasks",
     "links": {
-      "self": "http://www.example.com/api/v1/projects/100/tasks/100"
+      "self": "http://www.example.com/api/v1/tasks/100"
     },
     "attributes": {
       "name": "factory task",

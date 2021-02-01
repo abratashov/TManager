@@ -6,7 +6,7 @@ module Api
       attributes :body, :attachment
 
       def custom_links(_)
-        { self: api_v1_project_task_comment_url(@model.project.id, @model.task_id, @model) } if @model.persisted?
+        { self: api_v1_comment_url(@model) } if @model.persisted?
       end
     end
   end

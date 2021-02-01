@@ -1,24 +1,18 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+### Setup application
 
-Things you may want to cover:
+```
+bundle
+rails db:create
+rails db:migrate
+rails s
+```
 
-* Ruby version
+### Swagger UI
+[http://localhost:3000/apidocs](http://localhost:3000/apidocs)
 
-* System dependencies
+License
+----
 
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+MIT

@@ -43,7 +43,7 @@ RSpec.describe 'Comments', type: :request do
         .deep_merge('data' => {
                       'id' => created_comment.id.to_s,
                       'links' => {
-                        'self' => api_v1_project_task_comment_url(project, task, created_comment)
+                        'self' => api_v1_comment_url(created_comment)
                       }
                     }).to_json)
     end

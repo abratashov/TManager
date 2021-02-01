@@ -6,9 +6,9 @@ git_source(:github) do |repo_name|
 end
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.2.2'
+gem 'rails', '~> 5.2.4.4'
 # Use postgresql as the database for Active Record
-gem 'pg', '~> 0.18'
+gem 'pg'
 # Use Puma as the app server
 gem 'puma', '~> 3.7'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
@@ -27,7 +27,7 @@ gem 'rack-cors'
 gem 'cancancan', '~> 2.0'
 gem 'devise'
 gem 'devise_token_auth'
-gem 'omniauth'
+gem 'omniauth', '~> 1.9'
 
 gem 'acts_as_list'
 gem 'carrierwave', '~> 1.0'

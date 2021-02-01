@@ -2,6 +2,8 @@ module DeviseTokenAuthenticatable
   extend ActiveSupport::Concern
 
   included do
+    extend Devise::Models
+
     devise  :database_authenticatable, :registerable,
             :validatable, #:rememberable, :trackable,
             :omniauthable, authentication_keys: [:username]

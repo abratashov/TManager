@@ -7,9 +7,6 @@ if Rails.env.test? || Rails.env.cucumber?
     config.enable_processing = false
   end
 
-  # make sure uploader is auto-loaded
-  AttachmentUploader
-
   CarrierWave::Uploader::Base.descendants.each do |klass|
     next if klass.anonymous?
     klass.class_eval do

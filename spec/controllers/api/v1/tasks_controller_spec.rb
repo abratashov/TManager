@@ -43,7 +43,7 @@ RSpec.describe Api::V1::TasksController, type: :controller do
 
     it 'returns a success response' do
       get :show, params: { project_id: project.id, id: task.to_param }
-      expect(response).to be_success
+      expect(response).to have_http_status(:ok)
       expect(json[:data][:attributes]).to include(name: task.name)
     end
 

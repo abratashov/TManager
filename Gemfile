@@ -6,11 +6,11 @@ git_source(:github) do |repo_name|
 end
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.2.4.4'
+gem 'rails', '~> 6.0.0'
 # Use postgresql as the database for Active Record
 gem 'pg'
 # Use Puma as the app server
-gem 'puma', '~> 3.7'
+gem 'puma'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 # gem 'jbuilder', '~> 2.5'
 # Use Redis adapter to run Action Cable in production
@@ -24,7 +24,7 @@ gem 'puma', '~> 3.7'
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 gem 'rack-cors'
 
-gem 'cancancan', '~> 2.0'
+gem 'cancancan'
 gem 'devise'
 gem 'devise_token_auth'
 gem 'omniauth', '~> 1.9'
@@ -46,7 +46,7 @@ group :development, :test do
   gem 'ffaker'
   gem 'json_spec'
   gem 'rspec'
-  gem 'rspec-rails', '~> 3.6'
+  gem 'rspec-rails', '~> 4.0'
   gem 'shoulda-matchers'
 
   gem 'bullet'

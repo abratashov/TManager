@@ -1,0 +1,3 @@
+en:
+  errors:
+    unique?: 'exists already, it should be unique'

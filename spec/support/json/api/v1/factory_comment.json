@@ -3,7 +3,7 @@
     "id": "100",
     "type": "comments",
     "links": {
-      "self": "http://www.example.com/api/v1/comments/100"
+      "self": "http://test.host/api/v1/comments/100"
     },
     "attributes": {
       "body": "factory comment",

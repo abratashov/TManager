@@ -25,6 +25,7 @@ gem 'puma'
 gem 'rack-cors'
 
 gem 'cancancan'
+gem 'pundit'
 gem 'devise'
 gem 'devise_token_auth'
 gem 'omniauth', '~> 1.9'
@@ -35,6 +36,12 @@ gem 'carrierwave-i18n'
 gem 'jsonapi-utils', '~> 0.7.0'
 gem 'lol_dba'
 gem 'swagger-docs'
+
+gem 'dry-types'
+gem 'dry-validation', '0.11.2'
+gem 'trailblazer-rails'
+gem 'roar-jsonapi'
+gem 'reform-rails'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

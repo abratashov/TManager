@@ -17,6 +17,17 @@ def token_sign_in(user)
   request.headers.merge!(auth_headers)
 end
 
+def token_sign_out
+  auth_headers = {
+    'access-token' => '',
+    'token-type' => '',
+    'client' => '',
+    'expiry' => '',
+    'uid' => ''
+  }
+  request.headers.merge!(auth_headers)
+end
+
 def factory_v1_json(filename)
   full_path = Rails.root.join('spec', 'support', 'json', 'api', 'v1', "#{filename}.json")
   JSON.parse(File.read(full_path))

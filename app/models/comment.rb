@@ -1,4 +1,6 @@
 class Comment < ApplicationRecord
+  FIELDS = [:body, :attachment].freeze
+
   belongs_to :task, counter_cache: true
 
   delegate :project, to: :task, allow_nil: true

@@ -1,26 +1,28 @@
 module Api
   module V1
     class CommentsController < ApiController
-      load_and_authorize_resource :project, through: :current_user
-      load_and_authorize_resource :task, through: :project
-      load_and_authorize_resource :comment, through: :task
-
       def index
-        jsonapi_render json: @task.comments
+        result = run Comment::Operation::Index do
+          return render json: Comment::Representer::Index.new(@model)
+        end
+
+        render_error(result['result.notify'])
       end
 
       def create
-        comment = @task.comments.new(resource_params)
-
-        if comment.save
-          jsonapi_render json: comment, status: :created
-        else
-          jsonapi_render_errors json: comment, status: :unprocessable_entity
+        result = run Comment::Operation::Create do
+          return render json: Comment::Representer::Show.new(@model), status: :created
         end
+
+        render_error(result['result.notify'])
       end
 
       def destroy
-        @comment.destroy
+        result = run Comment::Operation::Destroy do
+          return render json: Comment::Representer::Show.new(@model), status: :no_content
+        end
+
+        render_error(result['result.notify'])
       end
     end
   end

@@ -13,8 +13,6 @@ RSpec.describe Task::Contract::Create do
   end
 
   describe 'Failure' do
-    let(:form) { described_class.new(project_dup) }
-
     let(:task_without_name) { build(:task, project: project, name: nil) }
     let(:form_without_name) { described_class.new(task_without_name) }
 

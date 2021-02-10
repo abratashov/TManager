@@ -21,7 +21,7 @@ RSpec.describe Project::Representer::Show do
 
   before { project }
 
-  it 'returns projects' do
+  it 'returns project' do
     expect(JSON.parse(rep.to_s)).to eq project_json
   end
 end

@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Api::V1::TasksController, type: :controller do
   let(:user) { create(:user) }
+  let(:another_user) { create(:user) }
 
   let(:project) { create(:project, user: user) }
 
@@ -35,6 +36,12 @@ RSpec.describe Api::V1::TasksController, type: :controller do
       get :index, params: { project_id: project.id }
       expect(json[:data].first[:attributes]).to include(name: task.name)
     end
+
+    it 'allow for any user' do
+      token_sign_in(another_user)
+      get :index, params: { project_id: project.id }
+      expect(json[:errors].first[:title]).to include("Couldn't find Project")
+    end
   end
 
   describe 'GET #show' do
@@ -42,15 +49,15 @@ RSpec.describe Api::V1::TasksController, type: :controller do
     let(:task) { project.tasks.create!(valid_attributes) }
 
     it 'returns a success response' do
-      get :show, params: { project_id: project.id, id: task.to_param }
+      get :show, params: { id: task.to_param }
       expect(response).to have_http_status(:ok)
       expect(json[:data][:attributes]).to include(name: task.name)
     end
 
     it 'returns an error for another user' do
       token_sign_in(another_user)
-      get :show, params: { project_id: project.id, id: task.to_param }
-      expect(json[:errors].first[:title]).to include("Couldn't find Project")
+      get :show, params: { id: task.to_param }
+      expect(json[:errors].first[:title]).to include("Couldn't find Task")
     end
   end
 
@@ -59,7 +66,7 @@ RSpec.describe Api::V1::TasksController, type: :controller do
       it 'renders a JSON response with the new task' do
         post :create, params: { project_id: project.id }.merge(valid_params)
         expect(response).to have_http_status(:created)
-        expect(response.content_type).to eq('application/vnd.api+json')
+        expect(response.content_type).to include('application/vnd.api+json')
         expect(json[:data][:links][:self]).to include(api_v1_task_path(Task.last))
       end
     end
@@ -68,8 +75,8 @@ RSpec.describe Api::V1::TasksController, type: :controller do
       it 'renders a JSON response with errors for the new task' do
         post :create, params: { project_id: project.id }.merge(invalid_params)
         expect(response).to have_http_status(:unprocessable_entity)
-        expect(response.content_type).to eq('application/vnd.api+json')
-        expect(json[:errors]). to include(include(title: "can't be blank"))
+        expect(response.content_type).to include('application/vnd.api+json')
+        expect(json[:errors]). to include(name: ['must be filled'])
       end
     end
   end
@@ -90,10 +97,16 @@ RSpec.describe Api::V1::TasksController, type: :controller do
       }
 
       it 'updates the requested task & checking position' do
-        put :update, params: { project_id: project.id, id: task1.to_param }.merge(new_attributes)
+        put :update, params: { id: task1.to_param }.merge(new_attributes)
         task1.reload
         expect(task1.name).to eq new_attributes[:data][:attributes][:name]
         expect(json[:data][:attributes]).to include(new_attributes[:data][:attributes])
+      end
+
+      it 'doesnt allow for another user' do
+        token_sign_in(another_user)
+        put :update, params: { id: task1.to_param }.merge(new_attributes)
+        expect(json[:errors].first[:title]).to include("Couldn't find Task")
       end
     end
 
@@ -101,66 +114,38 @@ RSpec.describe Api::V1::TasksController, type: :controller do
       it 'renders a JSON response with errors for the project' do
         task = project.tasks.create!(valid_attributes)
         put :update, params: {
-          project_id: project.id, id: task.to_param
+          id: task.to_param
         }.merge(invalid_params.deep_merge(data: { id: task.id }))
 
         expect(response).to have_http_status(:unprocessable_entity)
-        expect(response.content_type).to eq('application/vnd.api+json')
-        expect(json[:errors]). to include(include(title: "can't be blank"))
+        expect(response.content_type).to include('application/vnd.api+json')
+        expect(json[:errors]). to include(name: ['must be filled'])
       end
     end
   end
 
   describe 'DELETE #destroy' do
+    let(:task) { project.tasks.create!(valid_attributes) }
+
     it 'destroys the requested task' do
-      task = project.tasks.create!(valid_attributes)
+      task
       expect {
-        delete :destroy, params: { project_id: project.id, id: task.to_param }
+        delete :destroy, params: { id: task.to_param }
       }.to change(Task, :count).by(-1)
+    end
+
+    it 'doesnt allow for another user' do
+      token_sign_in(another_user)
+      delete :destroy, params: { id: task.to_param }
+      expect(json[:errors].first[:title]).to include("Couldn't find Task")
     end
   end
 
-  describe 'user ability' do
-    let(:project) { create(:project, user: user) }
-    let(:task) { create(:task, project: project) }
-    let(:ability) { Object.new }
-
-    before do
-      allow(Project).to receive(:find).and_return(project)
-      allow(Task).to receive(:find).and_return(task)
-      ability.extend(CanCan::Ability)
-      ability.can :manage, :all
-      allow(@controller).to receive(:current_ability).and_return(ability)
-    end
-
-    it 'cancan doesnt allow :index' do
-      ability.cannot :index, Task
+  describe 'without user' do
+    it 'fetch tasks' do
+      token_sign_out
       get :index, params: { project_id: project.id }
-      expect(json[:errors].first[:title]).to include('You are not authorized')
-    end
-
-    it 'cancan doesnt allow :show' do
-      ability.cannot :show, Task
-      get :show, params: { project_id: project.id, id: task.id }
-      expect(json[:errors].first[:title]).to include('You are not authorized')
-    end
-
-    it 'cancan doesnt allow :create' do
-      ability.cannot :create, Task
-      post :create, params: valid_params.merge(project_id: project.id)
-      expect(json[:errors].first[:title]).to include('You are not authorized')
-    end
-
-    it 'cancan doesnt allow :update' do
-      ability.cannot :update, Task
-      put :update, params: valid_params.deep_merge(project_id: project.id, id: task.id, data: { id: task.id })
-      expect(json[:errors].first[:title]).to include('You are not authorized')
-    end
-
-    it 'cancan doesnt allow :destroy' do
-      ability.cannot :destroy, Task
-      delete :destroy, params: { project_id: project.id, id: task.id }
-      expect(json[:errors].first[:title]).to include('You are not authorized')
+      expect(json[:errors].first).to include('You need to sign in or sign up before continuing')
     end
   end
 end

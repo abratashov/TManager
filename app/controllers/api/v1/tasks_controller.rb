@@ -1,37 +1,44 @@
 module Api
   module V1
     class TasksController < ApiController
-      load_and_authorize_resource :project, through: :current_user
-      load_and_authorize_resource :task, through: :project
-
       def index
-        jsonapi_render json: @project.tasks.ordered.includes(:project)
+        result = run Task::Operation::Index do
+          return render json: Task::Representer::Index.new(@model)
+        end
+
+        render_error(result['result.notify'])
       end
 
       def show
-        jsonapi_render json: @task
+        result = run Task::Operation::Show do
+          return render json: Task::Representer::Show.new(@model)
+        end
+
+        render_error(result['result.notify'])
       end
 
       def create
-        task = @project.tasks.new(resource_params)
-
-        if task.save
-          jsonapi_render json: task, status: :created
-        else
-          jsonapi_render_errors json: task, status: :unprocessable_entity
+        result = run Task::Operation::Create do
+          return render json: Task::Representer::Show.new(@model), status: :created
         end
+
+        render_error(result['result.notify'])
       end
 
       def update
-        if @task.update(resource_params)
-          jsonapi_render json: @task
-        else
-          jsonapi_render_errors json: @task, status: :unprocessable_entity
+        result = run Task::Operation::Update do
+          return render json: Task::Representer::Show.new(@model)
         end
+
+        render_error(result['result.notify'])
       end
 
       def destroy
-        @task.destroy
+        result = run Task::Operation::Destroy do
+          return render json: Task::Representer::Show.new(@model), status: :no_content
+        end
+
+        render_error(result['result.notify'])
       end
     end
   end

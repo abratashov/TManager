@@ -7,7 +7,7 @@ module Project::Operation
     step Contract::Persist()
 
     def model(ctx, current_user:, resource_params:, **)
-      attrs = resource_params.slice(:name)
+      attrs = resource_params.slice(*Project::FIELDS)
       ctx[:model] = scope(user: current_user, res: Project).new(attrs)
     end
   end

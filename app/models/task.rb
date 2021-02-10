@@ -1,5 +1,7 @@
 class Task < ApplicationRecord
-  belongs_to :project
+  FIELDS = [:deadline, :done, :name, :position].freeze
+
+  belongs_to :project, inverse_of: :tasks
   has_many :comments, dependent: :destroy
 
   validates :name, presence: true

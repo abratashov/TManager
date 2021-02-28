@@ -31,7 +31,7 @@ gem 'devise_token_auth'
 gem 'omniauth', '~> 1.9'
 
 gem 'acts_as_list'
-gem 'carrierwave', '~> 1.0'
+gem 'carrierwave', '~> 1.3'
 gem 'carrierwave-i18n'
 gem 'jsonapi-utils', '~> 0.7.0'
 gem 'lol_dba'
